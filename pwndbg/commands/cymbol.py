@@ -34,6 +34,7 @@ import pwndbg.lib.config
 import pwndbg.lib.gcc
 import pwndbg.lib.tempfile
 from pwndbg.color import message
+from security import safe_command
 
 P = ParamSpec("P")
 T = TypeVar("T")
@@ -108,7 +109,7 @@ def generate_debug_symbols(
     gcc_cmd = gcc_flags + gcc_extra_flags
 
     try:
-        subprocess.run(gcc_cmd, capture_output=True, check=True)
+        safe_command.run(subprocess.run, gcc_cmd, capture_output=True, check=True)
     except subprocess.CalledProcessError as exception:
         print(message.error(exception))
         print(
@@ -166,8 +167,7 @@ def edit_custom_structure(custom_structure_name: str, custom_structure_path: str
         editor_preference = cymbol_editor
 
     try:
-        subprocess.run(
-            [editor_preference, custom_structure_path],
+        safe_command.run(subprocess.run, [editor_preference, custom_structure_path],
             check=True,
         )
     except Exception:
