@@ -10,6 +10,7 @@ import gdb
 import pwndbg.commands
 import pwndbg.gdblib.vmmap
 from pwndbg.commands import CommandCategory
+from security import safe_command
 
 parser = argparse.ArgumentParser(
     description="Dump ROP gadgets with Jon Salwan's ROPgadget tool.",
@@ -37,7 +38,7 @@ def rop(grep, argument) -> None:
         cmd += argument
 
         try:
-            io = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+            io = safe_command.run(subprocess.Popen, cmd, stdout=subprocess.PIPE)
         except Exception:
             print("Could not run ROPgadget.  Please ensure it's installed and in $PATH.")
             return

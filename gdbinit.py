@@ -16,6 +16,7 @@ from typing import List
 from typing import Tuple
 
 import gdb
+from security import safe_command
 
 
 def hash_file(file_path: str | Path) -> str:
@@ -34,7 +35,7 @@ def run_poetry_install(poetry_path: os.PathLike[str], dev: bool = False) -> Tupl
     if dev:
         command.extend(("--with", "dev"))
     logging.debug(f"Updating deps with command: {' '.join(command)}")
-    result = subprocess.run(command, capture_output=True, text=True)
+    result = safe_command.run(subprocess.run, command, capture_output=True, text=True)
     return result.stdout.strip(), result.stderr.strip(), result.returncode
 
 
