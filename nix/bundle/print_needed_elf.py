@@ -8,6 +8,7 @@ import sys
 import os
 import subprocess
 from typing import Any, Iterable, List
+from security import safe_command
 
 
 def eprint(msg: Any):
@@ -15,7 +16,7 @@ def eprint(msg: Any):
 
 
 def run(args: List[str]) -> str:
-    result = subprocess.run(args, capture_output=True)
+    result = safe_command.run(subprocess.run, args, capture_output=True)
     if result.returncode != 0:
         eprint(result.stderr)
         eprint("Command failed with return code {}: {}".format(result.returncode, args))

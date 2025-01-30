@@ -7,6 +7,7 @@ import pwndbg.commands
 import pwndbg.rizin
 from pwndbg.color import message
 from pwndbg.commands import CommandCategory
+from security import safe_command
 
 parser = argparse.ArgumentParser(description="Launches rizin.", epilog="Example: rz -- -S -AA")
 parser.add_argument("--no-seek", action="store_true", help="Do not seek to current pc")
@@ -40,7 +41,7 @@ def rz(arguments, no_seek=False, no_rebase=False) -> None:
     cmd.extend([filename])
 
     try:
-        subprocess.call(cmd)
+        safe_command.run(subprocess.call, cmd)
     except Exception:
         print("Could not run rizin. Please ensure it's installed and in $PATH.")
 
