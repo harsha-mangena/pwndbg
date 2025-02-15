@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 import re
-from random import choice
 from typing import List
 
 from pwndbg.color import message
+import secrets
 
 TIPS: List[str] = [
     # GDB hints
@@ -50,7 +50,7 @@ TIPS: List[str] = [
 
 
 def get_tip_of_the_day() -> str:
-    return choice(TIPS)
+    return secrets.choice(TIPS)
 
 
 def color_tip(tip: str) -> str:
