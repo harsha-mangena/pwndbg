@@ -7,6 +7,7 @@ import pwndbg.commands
 import pwndbg.radare2
 from pwndbg.color import message
 from pwndbg.commands import CommandCategory
+from security import safe_command
 
 parser = argparse.ArgumentParser(description="Launches radare2.", epilog="Example: r2 -- -S -AA")
 parser.add_argument("--no-seek", action="store_true", help="Do not seek to current pc")
@@ -42,7 +43,7 @@ def r2(arguments, no_seek=False, no_rebase=False) -> None:
     cmd.extend([filename])
 
     try:
-        subprocess.call(cmd)
+        safe_command.run(subprocess.call, cmd)
     except Exception:
         print("Could not run radare2. Please ensure it's installed and in $PATH.")
 

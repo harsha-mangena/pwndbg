@@ -9,6 +9,7 @@ import gdb
 import pwndbg.commands
 import pwndbg.gdblib.vmmap
 from pwndbg.commands import CommandCategory
+from security import safe_command
 
 parser = argparse.ArgumentParser(
     description="ROP gadget search with ropper.",
@@ -33,6 +34,6 @@ def ropper(argument) -> None:
         cmd += argument
 
         try:
-            subprocess.call(cmd)
+            safe_command.run(subprocess.call, cmd)
         except Exception:
             print("Could not run ropper.  Please ensure it's installed and in $PATH.")
